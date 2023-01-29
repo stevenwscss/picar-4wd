@@ -74,8 +74,67 @@ def move25():
 
     fc.stop()
 
+
+
+
+
+
+
+
+
+
+
+
+def scan_step(ref):
+    scan_list = []
+    current_angle = 0
+    STEP = 18
+    us_step = STEP
+    current_angle += us_step
+    angle_distance = [0,0]
+    current_angle = 0
+    ANGLE_RANGE = 180
+    max_angle = ANGLE_RANGE/2
+    min_angle = -ANGLE_RANGE/2
+    
+    if current_angle >= max_angle:
+        current_angle = max_angle
+        us_step = -STEP #-18, sweep backward
+    elif current_angle <= min_angle:
+        current_angle = min_angle
+        us_step = STEP
+    status = get_status_at(current_angle, ref1=ref) #ref1
+
+    scan_list.append(status)
+    if current_angle == min_angle or current_angle == max_angle:
+        if us_step < 0:
+            # print("reverse")
+            scan_list.reverse()
+        # print(scan_list)
+        tmp = scan_list.copy()
+        scan_list = []
+        return tmp
+    else:
+        return False
+
+
+# This function tests the ultrasonic sensor and the servo
+def test_ultrasonic():
+    # default 18 step
+    # current_angle = 0
+    # angle_range = 180
+    # us_step = STEP = 18
+    # scan_list = []
+    while True:
+        scanList = fc.scan_step(35)
+        print(scanList)
+        if not scanList:
+            continue
+        print("let's go forward")
+
+
 if __name__ == '__main__':
-    move25()
+    test_ultrasonic()
 
 
 

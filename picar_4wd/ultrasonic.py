@@ -27,15 +27,16 @@ class Ultrasonic():
         self.trig.low()
         pulse_end = 0
         pulse_start = 0
-        timeout_start = time.time()
+        timeout_start = time.time() # time() gets the current time in seconds since the epoch
+        # what are the -1 and -2 here?
         while self.echo.value()==0:
-            pulse_start = time.time()
+            pulse_start = time.time() # time() gets the current time in seconds since the epoch
             if pulse_start - timeout_start > self.timeout:
-                return -1
+                return -1 # this means timeout? pulse starts after timeout
         while self.echo.value()==1:
             pulse_end = time.time()
             if pulse_end - timeout_start > self.timeout:
-                return -2
+                return -2 # this means no object detected, pulse ends after timeout
         during = pulse_end - pulse_start
         cm = round(during * 340 / 2 * 100, 2)
         #print(cm)
